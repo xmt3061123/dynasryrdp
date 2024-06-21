@@ -17,12 +17,12 @@ function Download-And-Install {
         Start-Process -FilePath $tempPath -ArgumentList $installArgs -Verb RunAs -Wait -ErrorAction Stop
     }
     catch {
-        Write-Error "Failed to download or install $fileName: $_"
+        Write-Error "Failed to download or install ${fileName}: $_"
     }
     finally {
         if (Test-Path $tempPath) {
             Remove-Item $tempPath -Force
-            Write-Output "$fileName has been removed from temp"
+            Write-Output "${fileName} has been removed from temp"
         }
     }
 }
