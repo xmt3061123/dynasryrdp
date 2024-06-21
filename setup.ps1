@@ -35,4 +35,4 @@ function Download-And-Install {
 
 # 顺序下载和安装
 Download-And-Install -url "https://dl.google.com/edgedl/chrome-remote-desktop/chromeremotedesktophost.msi" -fileName "chromeremotedesktophost.msi"
-Download-And-Install -url "https://dl.google.com/chrome/install/latest/chrome_installer.exe" -fileName "chrome_installer.exe" -installArgs "/install"
+#Download-And-Install -url "https://dl.google.com/chrome/install/latest/chrome_installer.exe" -fileName "chrome_installer.exe" -installArgs "/install"
