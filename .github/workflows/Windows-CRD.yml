@@ -11,19 +11,26 @@ on:
       pincode:
         description: 'Six digit Pin'
         required: true
-  
+
 jobs:
   build:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Check out repository
+      uses: actions/checkout@v2
+
     - name: Initializing Setup
       run: ./setup.ps1
-    - name: Starting CRD 
-      run: ${{ github.event.inputs.authcode }} -pin=${{ github.event.inputs.pincode }}
+      shell: pwsh
+
+    - name: Starting CRD
+      run: |
+        $authCode = '${{ github.event.inputs.authcode }}'
+        $pinCode = '${{ github.event.inputs.pincode }}'
+        Start-Process -FilePath "chrome-remote-desktop.exe" -ArgumentList "--start --code=$authCode --pin=$pinCode" -Wait
+      shell: pwsh
+
     - name: Keep Alive
       run: ./timeout.ps1
-
-  
-    
+      shell: pwsh
