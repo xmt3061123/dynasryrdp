@@ -27,7 +27,6 @@ jobs:
         $authcode = "${{ github.event.inputs.authcode }}"
         $pincode = "${{ github.event.inputs.pincode }}"
         # Assuming you have a script to start CRD which uses authcode and pincode
-        # Replace `Start-CRD.ps1` with the actual script that starts Chrome Remote Desktop
         ./Start-CRD.ps1 -authcode $authcode -pin $pincode
 
     - name: Keep Alive
