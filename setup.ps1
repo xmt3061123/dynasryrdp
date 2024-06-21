@@ -14,7 +14,7 @@ try {
     Write-Output "Downloading Chrome Remote Desktop Host..."
     Invoke-WebRequest -Uri 'https://dl.google.com/edgedl/chrome-remote-desktop/chromeremotedesktophost.msi' -OutFile $remoteDesktopInstaller
     Write-Output "Installing Chrome Remote Desktop Host..."
-    Start-Process -FilePath $remoteDesktopInstaller -Wait
+    Start-Process -FilePath $remoteDesktopInstaller -ArgumentList "/quiet /norestart" -Wait
     Write-Output "Cleaning up installer..."
     Remove-Item -Path $remoteDesktopInstaller
     Write-Output "Chrome Remote Desktop Host installed successfully."
@@ -29,7 +29,7 @@ try {
     Write-Output "Downloading Google Chrome..."
     Invoke-WebRequest -Uri 'https://dl.google.com/chrome/install/latest/chrome_installer.exe' -OutFile $chromeInstaller
     Write-Output "Installing Google Chrome..."
-    Start-Process -FilePath $chromeInstaller -ArgumentList '/install' -Verb RunAs -Wait
+    Start-Process -FilePath $chromeInstaller -ArgumentList '/silent /install' -Verb RunAs -Wait
     Write-Output "Cleaning up installer..."
     Remove-Item -Path $chromeInstaller
     Write-Output "Google Chrome installed successfully."
