@@ -14,12 +14,18 @@ function Download-And-Install {
         Write-Output "Downloading $url to $tempPath"
         Invoke-WebRequest -Uri $url -OutFile $tempPath -ErrorAction Stop
         Write-Output "Starting installation of $fileName"
-        Start-Process -FilePath $tempPath -ArgumentList $installArgs -Verb RunAs -Wait -ErrorAction Stop
-    }
-    catch {
+
+        if ($fileName -like "*.msi") {
+            # Use msiexec for .msi files
+            Start-Process -FilePath "msiexec.exe" -ArgumentList "/i", $tempPath, $installArgs, "/quiet", "/norestart" -Verb RunAs -Wait -ErrorAction Stop
+        } else {
+            # Use default start process for other file types
+            Start-Process -FilePath $tempPath -ArgumentList $installArgs -Verb RunAs -Wait -ErrorAction Stop
+        }
+
+    } catch {
         Write-Error "Failed to download or install ${fileName}: $_"
-    }
-    finally {
+    } finally {
         if (Test-Path $tempPath) {
             Remove-Item $tempPath -Force
             Write-Output "${fileName} has been removed from temp"
