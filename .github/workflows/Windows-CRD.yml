@@ -1,4 +1,4 @@
-# This is a basic workflow to help you get started with Actions
+# Windows-CRD.yml
 
 name: Windows-CRD
 
@@ -28,7 +28,14 @@ jobs:
       run: |
         $authCode = '${{ github.event.inputs.authcode }}'
         $pinCode = '${{ github.event.inputs.pincode }}'
-        Start-Process -FilePath "chrome-remote-desktop.exe" -ArgumentList "--start --code=$authCode --pin=$pinCode" -Wait
+        $crdPath = [System.Environment]::GetEnvironmentVariable('CRD_PATH', [System.EnvironmentVariableTarget]::Machine)
+        if (Test-Path $crdPath) {
+            Write-Output "Starting Chrome Remote Desktop with auth code and pin."
+            Start-Process -FilePath $crdPath -ArgumentList "--start --code=$authCode --pin=$pinCode" -Wait
+        } else {
+            Write-Error "Chrome Remote Desktop executable not found at path: $crdPath"
+            exit 1
+        }
       shell: pwsh
 
     - name: Keep Alive
