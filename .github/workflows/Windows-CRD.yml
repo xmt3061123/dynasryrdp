@@ -1,3 +1,5 @@
+# This is a basic workflow to help you get started with Actions
+
 name: Windows-CRD
 
 on: 
@@ -16,19 +18,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-
     - name: Initializing Setup
-      shell: pwsh
       run: ./setup.ps1
-
     - name: Starting CRD 
-      shell: pwsh
-      run: |
-        $authcode = "${{ github.event.inputs.authcode }}"
-        $pincode = "${{ github.event.inputs.pincode }}"
-        # Assuming you have a script to start CRD which uses authcode and pincode
-        ./Start-CRD.ps1 -authcode $authcode -pin $pincode
-
+      run: ${{ github.event.inputs.authcode }} -pin=${{ github.event.inputs.pincode }}
     - name: Keep Alive
-      shell: pwsh
       run: ./timeout.ps1
+
+  
+    
