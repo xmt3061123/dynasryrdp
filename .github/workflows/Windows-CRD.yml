@@ -1,4 +1,4 @@
-# Windows-CRD.yml
+# .github/workflows/windows-crd.yml
 
 name: Windows-CRD
 
@@ -32,9 +32,21 @@ jobs:
         if (Test-Path $crdPath) {
             Write-Output "Starting Chrome Remote Desktop with auth code and pin."
             Start-Process -FilePath $crdPath -ArgumentList "--start --code=$authCode --pin=$pinCode" -Wait
+            Write-Output "Chrome Remote Desktop started successfully."
         } else {
             Write-Error "Chrome Remote Desktop executable not found at path: $crdPath"
             exit 1
+        }
+      shell: pwsh
+
+    - name: Check CRD Process
+      run: |
+        Get-Process -Name remoting_start_host -ErrorAction SilentlyContinue
+        $logPath = "$env:LOCALAPPDATA\Google\Chrome Remote Desktop\host#\chrome-remote-desktop-host.log"
+        if (Test-Path $logPath) {
+            Get-Content -Path $logPath -Tail 50
+        } else {
+            Write-Output "Chrome Remote Desktop log file not found at expected path: $logPath"
         }
       shell: pwsh
 
